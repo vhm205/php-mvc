@@ -1,0 +1,22 @@
+%container {
+	padding: 0;
+	margin: 0;
+	position: relative;
+	height: auto;
+}
+%button-effect{
+	background-color: #0a0a0a;
+    background-image: linear-gradient(45deg, #6ab1d7 0%, #33d9de 50%, #002878 100%);
+    background-position: 100% 0;
+    background-size: 200% 200%;
+    color: white;
+    border: none!important;
+    outline: none!important;
+    border-radius: 50px;
+    padding: 8px 48px;
+    margin-top: 5%;
+    font-weight: 300;
+    box-shadow: 0 16px 32px 0 rgba(0, 40, 120, .35)!important;
+	transition: all 0.5s ease;
+	cursor: pointer
+}

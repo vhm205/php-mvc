@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+ErrorDocument 403 http://localhost/php/php-mvc/error/404.php
+ErrorDocument 404 http://localhost/php/php-mvc/error/404.php
+
+RewriteRule ^(.+)$ index.php?url=$1
