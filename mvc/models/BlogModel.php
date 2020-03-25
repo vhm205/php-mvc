@@ -10,6 +10,18 @@
 				return false;
 			}
 		}
+		public function getTagsByLimit($offset, $limit)
+		{
+			try {
+				$getAllTagsByLimit = $this->table('tags')
+														->offset($offset)
+														->limit($limit)
+														->get();
+				return $getAllTagsByLimit;
+			} catch (Exception $th) {
+				return false;
+			}
+		}
 		public function getTagByName($name)
 		{
 			try {
@@ -96,6 +108,16 @@
 				return false;
 			}
 		}
+		public function updateCategoryById($id, $data)
+		{
+			try {
+				$updateCategory = $this->table('categories')->update(['ID' => $id], $data);
+				return $updateCategory;
+			} catch (Exception $th) {
+				return false;
+			}
+		}
+
 	}
 
 ?>

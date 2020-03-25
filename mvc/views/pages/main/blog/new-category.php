@@ -22,16 +22,16 @@
 				<div class="form-group">
 					<label for="post-category">Name</label>
 					<input type="text"
-							class="form-control form-control-sm" name="category" id="post-category" aria-describedby="helpId">
+							class="form-control form-control-sm" id="post-category" aria-describedby="helpId">
 				</div>
 				<div class="form-group">
 					<label for="">Slug</label>
 					<input type="text"
-							class="form-control form-control-sm" name="slug" id="post-slug-category" aria-describedby="helpId">
+							class="form-control form-control-sm" id="post-slug-category" aria-describedby="helpId">
 				</div>
 				<div class="form-group">
 					<label for="">Parent Category</label>
-					<select class="custom-select" name="parent-category" id="post-parent-category">
+					<select class="custom-select" id="post-parent-category">
 						<option value="0" selected>-- TOP --</option>
 						<?php echo $data['show_option_categories']; ?>
 					</select>
@@ -82,4 +82,5 @@
 	</div>
 </div>
 
+<?php require_once './mvc/views/blocks/modals/categoryModal.php' ?>
 <script src="./public/js/blog/addCategory.js"></script>

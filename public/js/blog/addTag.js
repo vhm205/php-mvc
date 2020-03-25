@@ -20,7 +20,9 @@ function checkChangeTag(listCheckBox, inputCheckAll) {
 function updateTagName(uid) {
 	$('.input-edit-name').off('keypress').on('keypress', function(e){
 		if(e.originalEvent.which === 13){
-			const newName = $(`input[type="checkbox"][value="${uid}"]`).next()
+			const newName = $(`input[type="checkbox"][value="${uid}"]`).parent().next()
+
+			if(!newName.val()) return;
 
 			$.post("./Blog/updateTag", { id: uid, name: newName.val() },
 				(_, textStatus) => {
@@ -43,10 +45,10 @@ function editTag() {
 
 		const uid = $(this).data('uid')
 		const btnEditText = $(this).text().trim()
-		const cbTag = $(`input[type="checkbox"][value="${uid}"]`).next()
+		const cbTag = $(`input[type="checkbox"][value="${uid}"]`).parent().next()
 
 		if(btnEditText === 'Edit'){
-			cbTag.removeClass('d-none').addClass('d-inline-block')
+			cbTag.removeClass('d-none').addClass('d-inline-block').focus()
 			cbTag.next().addClass('d-none')
 			updateTagName.call(this, uid)
 

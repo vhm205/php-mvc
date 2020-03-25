@@ -18,15 +18,19 @@
 		return $errors;
 	}
 	
-	function ValidBlogCategory($name, $slug, $parent, $model)
+	function ValidBlogCategory($name, $slug, $parentId, $model, $checkExists = 1)
 	{
 		$errors = [];
 
-		if(empty($name) || empty($slug)){
+		if(empty($name) || empty($slug) || !isset($parentId)){
 			$errors[] = Message::$validErrorsBlog['category_null'];
 		}
 
-		if(count($model->getCategoryByName($name)) > 0){
+		if(!is_int($parentId)){
+			$errors[] = Message::$validErrorsBlog['parent_id_wrong'];
+		}
+
+		if($checkExists === 1 && count($model->getCategoryByName($name)) > 0){
 			$errors[] = Message::$validErrorsBlog['category_exists'];
 		}
 

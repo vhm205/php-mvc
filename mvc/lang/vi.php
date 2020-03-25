@@ -48,7 +48,8 @@
 			'tag_null' => 'Bạn cần nhập tên tag',
 			'category_null' => 'Bạn cần nhập đầy đủ các trường',
 			'add_tag_failed' => 'Thêm tag thất bại',
-			'add_category_failed' => 'Thêm category thất bại'
+			'add_category_failed' => 'Thêm category thất bại',
+			'parent_id_wrong' => 'Parent category không hợp lệ',
 		];
 
 		static $validSuccessBlog = [

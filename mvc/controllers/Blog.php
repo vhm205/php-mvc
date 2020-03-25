@@ -39,11 +39,23 @@
 			]);
 		}
 
-		public function NewTag()
+		public function NewTag($currentPage = 1)
 		{
+			if(!Validation::valid_integer($currentPage) || $currentPage < 1) $currentPage = 1;
+
+			$limit = 5;
+			$getAllTags = count($this->BlogModel->getAllTag());
+			$tagOnePage = ceil($getAllTags / $limit);
+			$offset = ($currentPage * $limit) - $limit;
+			$getTagsByLimit = $this->BlogModel->getTagsByLimit($offset, $limit);
+
+			if($currentPage > $tagOnePage) $currentPage = $tagOnePage;
+
 			$this->view('master-main', [
 				'page' => 'main/blog/new-tag',
-				'tags' => $this->BlogModel->getAllTag(),
+				'tags' => $getTagsByLimit,
+				'total' => (int)$tagOnePage,
+				'current_page' => (int)$currentPage,
 				'user' => $this->user ?? Functions::logout()
 			]);
 		}
@@ -62,7 +74,10 @@
 							<div class='form-check form-check-inline'>
 								<label class='form-check-label'>
 									<div class='tagname d-flex'>
-										<input type='checkbox' class='form-check-input' value='$addTag'>
+										<div class='custom-control custom-checkbox'>
+											<input type='checkbox' class='custom-control-input' id='ckTag$addTag' value='$addTag'>
+											<label class='custom-control-label' for='ckTag$addTag'></label>
+										</div>
 										<input type='text' class='form-control form-control-sm d-none input-edit-name' value='$name'>
 										<span class='tag ml-1'>$name</span>
 									</div>
@@ -156,8 +171,9 @@
 						$resultCategories .= "
 						<ul class='card shadow mb-1'>
 							<li data-uid='".$value['ID']."'>
-								<a href='#collapseCategories".$value['ID']."' class='d-block card-header py-3' data-toggle='collapse' role='button' aria-expanded='true' aria-controls='collapseCategories".$value['ID']."'>
+								<a href='#collapseCategories".$value['ID']."' class='d-block card-header py-3 d-flex' data-toggle='collapse' role='button' aria-expanded='true' aria-controls='collapseCategories".$value['ID']."'>
 									<h6 class='m-0 font-weight-bold text-primary'>".$value['NAME']."</h6>
+									<span class='d-none'>".$value['PARENT_ID']."</span>
 								</a>
 								<div class='collapse' id='collapseCategories".$value['ID']."'>
 									<div class='card-body'>
@@ -183,6 +199,7 @@
 												</button>
 											</div>
 										</div>
+										<a href='#' class='ml-2 link-edit-category' data-toggle='modal' data-target='#categoryModal' data-uid='".$value['ID']."'>Edit</a>
 									</div>
 								</div>
 							</li>
@@ -206,7 +223,7 @@
 		{
 			$name = Validation::safe($_REQUEST['name']);
 			$slug = Validation::safe(Functions::toSlug($_REQUEST['slug']));
-			$parentId = Validation::safe($_REQUEST['parent_id']);
+			$parentId = (int)Validation::safe($_REQUEST['parent_id']);
 
 			$errors = ValidBlogCategory($name, $slug, $parentId, $this->BlogModel);
 
@@ -224,6 +241,7 @@
 						<li data-uid='$addCategory'>
 							<a href='#collapseCategories$addCategory' class='d-block card-header py-3' data-toggle='collapse' role='button' aria-expanded='true' aria-controls='collapseCategories$addCategory'>
 								<h6 class='m-0 font-weight-bold text-primary'>$name</h6>
+								<span class='d-none'>$parentId</span>
 							</a>
 							<div class='collapse' id='collapseCategories$addCategory'>
 								<div class='card-body'>
@@ -249,12 +267,13 @@
 											</button>
 										</div>
 									</div>
+									<a href='#' class='ml-2 link-edit-category' data-toggle='modal' data-target='#categoryModal' data-uid='$addCategory'>Edit</a>
 								</div>
 							</div>
 						</li>
 					</ul>
 					";
-					if((int)$parentId === 0){
+					if($parentId === 0){
 						$htmlForOption = "<option value='$addCategory'>$name</option>";
 					} else{
 						$htmlForOption = "<option value='$addCategory'>&nbsp;&nbsp;+&nbsp;$name</option>";
@@ -285,6 +304,54 @@
 			$this->BlogModel->deleteCategory(Validation::safe($id)) ? 
 							http_response_code(200) :
 							http_response_code(400);
+			die();
+		}
+
+		public function updateCategory()
+		{
+			$id = Validation::safe($_REQUEST['id']);
+			$name = Validation::safe($_REQUEST['name']);
+			$slug = Validation::safe($_REQUEST['slug']);
+
+			$errors = ValidBlogCategory($name, $slug, 1, $this->BlogModel);
+
+			if(count($errors) === 0){
+				$data = [
+					'NAME' => $name,
+					'SLUG' => $slug
+				];
+				if($this->BlogModel->updateCategoryById($id, $data)){
+					http_response_code(200);
+					die();
+				}
+			}
+
+			http_response_code(400);
+			die();
+		}
+
+		public function updateDetailCategory()
+		{
+			$id = Validation::safe($_REQUEST['id']);
+			$name = Validation::safe($_REQUEST['name']);
+			$slug = Validation::safe($_REQUEST['slug']);
+			$parentId = (int)Validation::safe($_REQUEST['parent_id']);
+
+			$errors = ValidBlogCategory($name, $slug, $parentId, $this->BlogModel, 0);
+
+			if(count($errors) === 0){
+				$data = [
+					'NAME' => $name,
+					'SLUG' => $slug,
+					'PARENT_ID' => $parentId
+				];
+				if($this->BlogModel->updateCategoryById($id, $data)){
+					http_response_code(200);
+					die();
+				}
+			}
+
+			http_response_code(400);
 			die();
 		}
 	}

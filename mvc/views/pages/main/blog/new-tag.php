@@ -38,10 +38,10 @@
 					</div>
 					<div class="list-group-item d-flex justify-content-between align-items-center form-check-all-tag bg-primary text-white">
 						<div class="form-check form-check-inline">
-							<label class="form-check-label">
-								<input class="form-check-input" type="checkbox" id="input-check-all-tag">
-								<span class="header-tag">Name</span>
-							</label>
+							<div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" id="input-check-all-tag">
+								<label class="custom-control-label header-tag" for="input-check-all-tag">Name</label>
+							</div>
 						</div>
 						<div class="header-tag">Options</div>
 					</div>
@@ -51,7 +51,10 @@
 								<div class="form-check form-check-inline">
 									<label class="form-check-label">
 										<div class="tagname d-flex">
-											<input type="checkbox" class="form-check-input" value="<?php echo $value['ID']; ?>">
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" class="custom-control-input" id="ckTag<?php echo $value['ID']; ?>" value="<?php echo $value['ID']; ?>">
+												<label class="custom-control-label" for="ckTag<?php echo $value['ID']; ?>"></label>
+											</div>
 											<input type="text" class="form-control form-control-sm d-none input-edit-name" value="<?php echo $value['NAME']; ?>">
 											<span class="tag ml-1"><?php echo $value['NAME']; ?></span>
 										</div>
@@ -69,7 +72,24 @@
 								</div>
 							</li>
 						<?php } ?>
-					</ul> 
+					</ul>
+					<ul class="pagination mt-2 float-right">
+						<!-- Previous Page -->
+						<li class="page-item <?php if($data['current_page'] === 1) echo 'disabled'; ?>">
+							<a class="page-link" href="./Blog/NewTag/<?php echo ($data['current_page'] - 1); ?>">Previous</a>
+						</li>
+
+						<?php for ($i = 1; $i <= $data['total']; $i++) { ?>
+							<li class="page-item <?php if($data['current_page'] === $i) echo 'active'; ?>">
+								<a class="page-link" href="./Blog/NewTag/<?php echo $i; ?>"><?php echo $i; ?></a>
+							</li>
+						<?php } ?>
+						
+						<!-- Next Page -->
+						<li class="page-item <?php if($data['current_page'] === $data['total']) echo 'disabled'; ?>">
+							<a class="page-link" href="./Blog/NewTag/<?php echo ($data['current_page'] + 1); ?>">Next</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
