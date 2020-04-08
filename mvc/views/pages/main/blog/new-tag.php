@@ -81,7 +81,9 @@
 
 						<?php for ($i = 1; $i <= $data['total']; $i++) { ?>
 							<li class="page-item <?php if($data['current_page'] === $i) echo 'active'; ?>">
-								<a class="page-link" href="./Blog/NewTag/<?php echo $i; ?>"><?php echo $i; ?></a>
+								<a class="page-link" href="./Blog/NewTag/<?php echo $i; ?>">
+									<?php echo $i; ?>
+								</a>
 							</li>
 						<?php } ?>
 						

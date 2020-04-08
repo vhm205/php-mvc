@@ -46,7 +46,7 @@
 				<div class="card-body">
 					<div class="form-group">
 						<label for="post-slug">Slug</label>
-						<input type="text" class="form-control" name="slug" id="post-slug" aria-describedby="helpIdSlug">
+						<input type="text" class="form-control" name="slug" id="post-slug" aria-describedby="helpIdSlug" disabled>
 						<small id="helpIdSlug" class="form-text text-muted"></small>
 					</div>
 					<div class="form-group">
@@ -55,15 +55,11 @@
 						<small id="helpIdTag" class="form-text text-muted"></small>
 					</div>
 					<div class="form-group">
-						<label for="post-categories">Categories</label>
+						<label>Categories</label>
 						<select multiple class="form-control" name="categories" id="post-categories">
-							<option value="Javascript">Javascript</option>
-							<option value="NodeJS">NodeJS</option>
-							<option value="PHP">PHP</option>
-							<option value="C#">C#</option>
-							<option value="MySQL">MySQL</option>
+							<<?php echo $data['show_option_categories']; ?>
 						</select>
-						<div class="contain-categories p-1"></div>
+						<div class="contain-categories p-1" data-ids=""></div>
 						<button type="button" id="btn-add-categories" class="btn btn-outline-primary btn-block mt-1">Add categories</button>
 					</div>
 				</div>

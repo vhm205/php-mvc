@@ -1,6 +1,8 @@
 <?php
 	class BlogModel extends Database
 	{
+		// Handle Tags
+
 		public function getAllTag()
 		{
 			try {
@@ -70,6 +72,8 @@
 			}
 		}
 
+		// Handle Categories
+
 		public function getAllCategories()
 		{
 			try {
@@ -116,6 +120,13 @@
 			} catch (Exception $th) {
 				return false;
 			}
+		}
+
+		// Handle Posts
+
+		public function addNewPost($data)
+		{
+			
 		}
 
 	}

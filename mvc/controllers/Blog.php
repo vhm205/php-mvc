@@ -19,8 +19,12 @@
 
 		public function NewPost()
 		{
+			$categories = $this->BlogModel->getAllCategories();
+			$showOptionsCategories = $this->showListCategories($categories, 0, 'option');
+
 			$this->view('master-main', [
 				'page' => 'main/blog/new-post',
+				'show_option_categories' => $showOptionsCategories,
 				'user' => $this->user ?? Functions::logout()
 			]);
 		}
@@ -44,8 +48,8 @@
 			if(!Validation::valid_integer($currentPage) || $currentPage < 1) $currentPage = 1;
 
 			$limit = 5;
-			$getAllTags = count($this->BlogModel->getAllTag());
-			$tagOnePage = ceil($getAllTags / $limit);
+			$allTags = count($this->BlogModel->getAllTag());
+			$tagOnePage = ceil($allTags / $limit);
 			$offset = ($currentPage * $limit) - $limit;
 			$getTagsByLimit = $this->BlogModel->getTagsByLimit($offset, $limit);
 
@@ -59,6 +63,8 @@
 				'user' => $this->user ?? Functions::logout()
 			]);
 		}
+
+		// Handle Tags
 
 		public function addNewTag()
 		{
@@ -152,6 +158,8 @@
 							http_response_code(400);
 			die();
 		}
+
+		// Handle Categories
 
 		public function showListCategories($menus, $parent_id = 0, $type = 'template', $insert_text = '')
 		{
@@ -352,6 +360,46 @@
 			}
 
 			http_response_code(400);
+			die();
+		}
+
+		// Handle Posts
+
+		public function addNewPost()
+		{
+			$title = htmlspecialchars(strip_tags(trim($_POST['title'])));
+			$content = $_POST['content'];
+			$slug = Validation::safe(Functions::toSlug($_POST['slug']));
+			$tags = $_POST['tags'][0] !== '' ? $_POST['tags'] : '';
+			$categories = $_POST['categories'] ? $_POST['categories'] : 'Uncategorised';
+
+			$errors = ValidBlogPost($title, $content, $slug);
+
+			if(count($errors) === 0){
+				echo json_encode($_POST);
+
+				$data = [
+					'TITLE' => $title,
+					'CONTENT' => $content,
+					'SLUG' => $slug,
+					'TAGS' => $tags,
+					'CATEGORIES' => $categories
+				];
+
+
+				http_response_code(200);
+				echo json_encode([
+					'status'  => 1,
+					'success' => Message::$validSuccessBlog['add_post']
+				]);
+				die();
+			}
+
+			http_response_code(400);
+			echo json_encode([
+				'status'  => 0,
+				'errors' => $errors
+			]);
 			die();
 		}
 	}

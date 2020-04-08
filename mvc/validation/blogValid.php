@@ -40,4 +40,18 @@
 
 		return $errors;
 	}
+
+	function ValidBlogPost($title, $content, $slug)
+	{
+		$errors = [];
+		
+		if(empty($slug)) $errors[] = Message::$validErrorsBlog['slug_empty'];
+		if(empty($content)) $errors[] = Message::$validErrorsBlog['content_empty'];
+		
+		if(empty($title) || mb_strlen($title, 'utf8') >= 70){
+			$errors[] = Message::$validErrorsBlog['title_incorrect'];
+		}
+
+		return $errors;
+	}
 ?>

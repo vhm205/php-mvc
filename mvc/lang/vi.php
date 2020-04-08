@@ -50,11 +50,15 @@
 			'add_tag_failed' => 'Thêm tag thất bại',
 			'add_category_failed' => 'Thêm category thất bại',
 			'parent_id_wrong' => 'Parent category không hợp lệ',
+			'slug_empty' => 'Slug rỗng ~~',
+			'content_empty' => 'Nội dung rỗng ~~',
+			'title_incorrect' => 'Tiêu đề  không được trống và tối đa 70 ký tự',
 		];
 
 		static $validSuccessBlog = [
 			'add_tag' => 'Thêm tag thành công',
-			'add_category' => 'Thêm category thành công'
+			'add_category' => 'Thêm category thành công',
+			'add_post' => 'Thêm post thành công',
 		];
 	}	
 ?>
