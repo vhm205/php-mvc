@@ -72,7 +72,10 @@
 			$errors = ValidBlogTag($name, $this->BlogModel);
 
 			if(count($errors) === 0){
-				$addTag = $this->BlogModel->addNewTag(['NAME' => $name]);
+				$addTag = $this->BlogModel->addNewTag([
+					'NAME' => $name,
+					'SLUG' => Functions::toSlug($name)
+				]);
 
 				if($addTag){
 					$htmlInfo = "
@@ -128,7 +131,12 @@
 			$errors = ValidBlogTag($name, $this->BlogModel);
 
 			if(count($errors) === 0){
-				if($this->BlogModel->updateTagById($id, ['NAME' => $name])){
+				$data = [
+					'NAME' => $name,
+					'SLUG' => Functions::toSlug($name),
+					'UPDATE_AT' => DATETIMENOW
+				];
+				if($this->BlogModel->updateTagById($id, $data)){
 					http_response_code(200);
 					die();
 				}
@@ -326,7 +334,8 @@
 			if(count($errors) === 0){
 				$data = [
 					'NAME' => $name,
-					'SLUG' => $slug
+					'SLUG' => $slug,
+					'UPDATE_AT' => DATETIMENOW
 				];
 				if($this->BlogModel->updateCategoryById($id, $data)){
 					http_response_code(200);
@@ -351,7 +360,8 @@
 				$data = [
 					'NAME' => $name,
 					'SLUG' => $slug,
-					'PARENT_ID' => $parentId
+					'PARENT_ID' => $parentId,
+					'UPDATE_AT' => DATETIMENOW
 				];
 				if($this->BlogModel->updateCategoryById($id, $data)){
 					http_response_code(200);
@@ -370,29 +380,29 @@
 			$title = htmlspecialchars(strip_tags(trim($_POST['title'])));
 			$content = $_POST['content'];
 			$slug = Validation::safe(Functions::toSlug($_POST['slug']));
-			$tags = $_POST['tags'][0] !== '' ? $_POST['tags'] : '';
-			$categories = $_POST['categories'] ? $_POST['categories'] : 'Uncategorised';
+			$tags = $_POST['tags'][0] !== '' ? json_encode($_POST['tags']) : 'Undefined';
+			$categories = $_POST['categories'] ? json_encode($_POST['categories']) : 'Uncategorised';
 
-			$errors = ValidBlogPost($title, $content, $slug);
+			$errors = ValidBlogPost($title, $content, $slug, $this->BlogModel);
 
 			if(count($errors) === 0){
-				echo json_encode($_POST);
-
 				$data = [
-					'TITLE' => $title,
-					'CONTENT' => $content,
-					'SLUG' => $slug,
+					'POST_TITLE' => $title,
+					'POST_CONTENT' => $content,
+					'POST_SLUG' => $slug,
 					'TAGS' => $tags,
 					'CATEGORIES' => $categories
 				];
 
-
-				http_response_code(200);
-				echo json_encode([
-					'status'  => 1,
-					'success' => Message::$validSuccessBlog['add_post']
-				]);
-				die();
+				if($this->BlogModel->addNewPost($data)){
+					http_response_code(200);
+					echo json_encode([
+						'status'  => 1,
+						'message' => Message::$validSuccessBlog['add_post']
+					]);
+					die();
+				}
+				$errors[] = Message::$validErrorsBlog['add_post_failed'];
 			}
 
 			http_response_code(400);

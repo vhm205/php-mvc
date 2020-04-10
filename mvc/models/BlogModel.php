@@ -6,8 +6,7 @@
 		public function getAllTag()
 		{
 			try {
-				$getAllTags = $this->table('tags')->get();
-				return $getAllTags;
+				return $this->table('tags')->get();
 			} catch (Exception $th) {
 				return false;
 			}
@@ -15,11 +14,10 @@
 		public function getTagsByLimit($offset, $limit)
 		{
 			try {
-				$getAllTagsByLimit = $this->table('tags')
-														->offset($offset)
-														->limit($limit)
-														->get();
-				return $getAllTagsByLimit;
+				return $this->table('tags')
+											->offset($offset)
+											->limit($limit)
+											->get();
 			} catch (Exception $th) {
 				return false;
 			}
@@ -27,10 +25,9 @@
 		public function getTagByName($name)
 		{
 			try {
-				$getTag = $this->table('tags')
+				return $this->table('tags')
 												->where(['NAME' => $name])
 												->get();
-				return $getTag;
 			} catch (Exception $th) {
 				return false;
 			}
@@ -38,8 +35,7 @@
 		public function addNewTag($data)
 		{
 			try {
-				$addTag = $this->table('tags')->insert($data);
-				return $addTag;
+				return $this->table('tags')->insert($data);
 			} catch (Exception $th) {
 				return false;
 			}
@@ -47,8 +43,7 @@
 		public function deleteTag($id)
 		{
 			try {
-				$deleteTag = $this->table('tags')->delete($id);
-				return $deleteTag;
+				return $this->table('tags')->delete($id);
 			} catch (Exception $th) {
 				return false;
 			}
@@ -56,8 +51,7 @@
 		public function deleteManyTag($arrId)
 		{
 			try {
-				$deleteManyTag = $this->table('tags')->deleteMany($arrId);
-				return $deleteManyTag;
+				return $this->table('tags')->deleteMany($arrId);
 			} catch (Exception $th) {
 				return false;
 			}
@@ -65,8 +59,7 @@
 		public function updateTagById($id, $data)
 		{
 			try {
-				$updateTag = $this->table('tags')->update(['ID' => $id], $data);
-				return $updateTag;
+				return $this->table('tags')->update(['ID' => $id], $data);
 			} catch (Exception $th) {
 				return false;
 			}
@@ -77,8 +70,7 @@
 		public function getAllCategories()
 		{
 			try {
-				$getAllCategories = $this->table('categories')->get();
-				return $getAllCategories;
+				return $this->table('categories')->get();
 			} catch (Exception $th) {
 				return false;
 			}
@@ -86,10 +78,9 @@
 		public function getCategoryByName($name)
 		{
 			try {
-				$getCategory = $this->table('categories')
+				return $this->table('categories')
 														->where(['NAME' => $name])
 														->get();
-				return $getCategory;
 			} catch (Exception $th) {
 				return false;
 			}
@@ -97,8 +88,7 @@
 		public function addNewCategory($data)
 		{
 			try {
-				$addCategory = $this->table('categories')->insert($data);
-				return $addCategory;
+				return $this->table('categories')->insert($data);
 			} catch (Exception $th) {
 				return false;
 			}
@@ -106,8 +96,7 @@
 		public function deleteCategory($id)
 		{
 			try {
-				$deleteCategory = $this->table('categories')->delete($id);
-				return $deleteCategory;
+				return $this->table('categories')->delete($id);
 			} catch (Exception $th) {
 				return false;
 			}
@@ -115,8 +104,7 @@
 		public function updateCategoryById($id, $data)
 		{
 			try {
-				$updateCategory = $this->table('categories')->update(['ID' => $id], $data);
-				return $updateCategory;
+				return $this->table('categories')->update(['ID' => $id], $data);
 			} catch (Exception $th) {
 				return false;
 			}
@@ -126,7 +114,29 @@
 
 		public function addNewPost($data)
 		{
-			
+			try {
+				return $this->table('posts')->insert($data);
+			} catch (Exception $th) {
+				return false;
+			}
+		}
+		public function getPostByTitle($title)
+		{
+			try {
+				return $this->table('posts')
+										->where(['POST_TITLE' => $title])
+										->get();
+			} catch (Exception $th) {
+				return false;
+			}
+		}
+		public function getAllPosts()
+		{
+			try {
+				return $this->table('posts')->get();
+			} catch (Exception $th) {
+				return false;
+			}
 		}
 
 	}

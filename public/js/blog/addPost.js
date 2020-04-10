@@ -22,7 +22,7 @@ $(document).ready(function () {
 		const title = $('#post-title').val().trim()
 		const content = editor.getData() || ''
 		const slug = $('#post-slug').val().trim()
-		const tags = $('#post-tag').val().replace(' ', '').split(',')
+		const tags = $('#post-tag').val().split(',')
 
 		if(!title || !slug || !content){
 			toast('warning', 'You need enter title, slug, content post')
@@ -36,14 +36,13 @@ $(document).ready(function () {
 		$.ajax({
 			type: "post",
 			url: "./Blog/addNewPost",
-			data: { title, content, slug, tags, categories },
-			dataType: "json"
+			dataType: "json",
+			data: { title, content, slug, tags, categories }
 		}).done(res => {
-			console.log(res);
-
-			
+			toast('success', res.message, 3000)
+			setTimeout(() => location.reload(), 4000);
 		}).fail(err => {
-			const errStr = err?.responseJSON['errors'].join('\n');
+			const errStr = err.responseJSON['errors'].join('\n');
 			toast('error', errStr, 7000);
 		}).always(() => {
 			icon.html(`<i class="fas fa-flag"></i>`)

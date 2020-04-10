@@ -45,6 +45,38 @@ function toSlug(str)
 	return str;
 }
 
+function checkBrowser(browser) {
+	// https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+	switch (browser) {
+		case 'chrome':
+			// Chrome 1 - 79
+			return !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+		case 'firefox':
+			// Firefox 1.0+
+			return typeof InstallTrigger !== 'undefined';
+		case 'opera':
+			// Opera 8.0+
+			return (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+		case 'safari':
+			// Safari 3.0+ "[object HTMLElementConstructor]" 
+			return /constructor/i.test(window.HTMLElement) || (p => { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+		case 'ie':
+			// Internet Explorer 6-11
+			return /*@cc_on!@*/false || !!document.documentMode;
+		case 'edge':
+			// Edge 20+
+			return !isIE && !!window.StyleMedia;
+		case 'edge-chromium':
+			// Edge (based on chromium) detection
+			return isChrome && (navigator.userAgent.indexOf("Edg") != -1);
+		case 'blink':
+			// Blink engine detection
+			return (isChrome || isOpera) && !!window.CSS;
+		default:
+			break;
+	}
+}
+
 $(document).ready(function() {
 	'use stricts';
 

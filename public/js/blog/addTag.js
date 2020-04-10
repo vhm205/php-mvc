@@ -21,20 +21,16 @@ function updateTagName(uid) {
 	$('.input-edit-name').off('keypress').on('keypress', function(e){
 		if(e.originalEvent.which === 13){
 			const newName = $(`input[type="checkbox"][value="${uid}"]`).parent().next()
+			
+			if(!newName.val() || newName.val().length >= 30) return;
+			
+			$.post("./Blog/updateTag", { id: uid, name: newName.val() }).always(() => {
+				newName.addClass('d-none').removeClass('d-inline-block')
+				newName.next().removeClass('d-none')
+				newName.next().text(newName.val())
 
-			if(!newName.val()) return;
-
-			$.post("./Blog/updateTag", { id: uid, name: newName.val() },
-				(_, textStatus) => {
-					if(textStatus === 'success'){
-						newName.addClass('d-none').removeClass('d-inline-block')
-						newName.next().removeClass('d-none')
-						newName.next().text(newName.val())
-
-						$(this).html(`<i class="fas fa-pencil-alt mr-1"></i>Edit`)
-					}
-				}
-			);
+				$(this).html(`<i class="fas fa-pencil-alt mr-1"></i>Edit`)
+			});
 		}	
 	}.bind(this))
 }

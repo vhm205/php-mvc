@@ -149,7 +149,6 @@
 
 				$prepare->execute($values);
 				return self::$connection->lastInsertId();
-				// return $prepare->rowCount();
 			}
 		}
 

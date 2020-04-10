@@ -41,12 +41,16 @@
 		return $errors;
 	}
 
-	function ValidBlogPost($title, $content, $slug)
+	function ValidBlogPost($title, $content, $slug, $model)
 	{
 		$errors = [];
 		
 		if(empty($slug)) $errors[] = Message::$validErrorsBlog['slug_empty'];
 		if(empty($content)) $errors[] = Message::$validErrorsBlog['content_empty'];
+
+		if(count($model->getPostByTitle($title)) > 0){
+			$errors[] = Message::$validErrorsBlog['post_title_exists'];
+		}
 		
 		if(empty($title) || mb_strlen($title, 'utf8') >= 70){
 			$errors[] = Message::$validErrorsBlog['title_incorrect'];
