@@ -124,8 +124,8 @@
 		{
 			try {
 				return $this->table('posts')
-										->where(['POST_TITLE' => $title])
-										->get();
+								->where(['POST_TITLE' => $title])
+								->get();
 			} catch (Exception $th) {
 				return false;
 			}

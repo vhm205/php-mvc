@@ -68,7 +68,6 @@
 	</div>
 </form>
 
-<script src="./public/libs/js/ckeditor5_17.0.0_classic.js"></script>
-<script src="./public/libs/js/ckfinder-3.5.0.js"></script>
+<script src="./vendor/ckeditor/ckeditor/ckeditor.js"></script>
 <script src="./public/js/configCkeditor.js"></script>
 <script src="./public/js/blog/addPost.js"></script>

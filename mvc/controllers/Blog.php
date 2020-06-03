@@ -17,6 +17,11 @@
 			$this->user = GetUserInfo($this->UserModel);
 		}
 
+		public function index()
+		{
+			header('location: ' . ORIGIN_URL . '/error/404.php');
+		}
+
 		public function NewPost()
 		{
 			$categories = $this->BlogModel->getAllCategories();

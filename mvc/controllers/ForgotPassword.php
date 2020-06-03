@@ -93,7 +93,7 @@
 					// Update token & token expire
 					if($this->UserModel->UpdateToken($email, $token)){
 						$subject  = "Email Reset Password";
-						$body 	  = Functions::templateMailResetPass($email, $token);
+						$body 	 = Functions::templateMailResetPass($email, $token);
 						$sendMail = sendMail(EMAIL_CONFIRM, EMAIL_PASSWORD, $email, $subject, $body);
 
 						// Send mail to reset password

@@ -20,7 +20,7 @@ $(document).ready(function () {
 		
 		const categories = $('.contain-categories').data('ids')
 		const title = $('#post-title').val().trim()
-		const content = editor.getData() || ''
+		const content = CKEDITOR.instances.editor.getData()
 		const slug = $('#post-slug').val().trim()
 		const tags = $('#post-tag').val().split(',')
 
@@ -49,4 +49,14 @@ $(document).ready(function () {
 			$(this).removeClass('disabled')
 		})
 	})
+
+	window.onbeforeunload = function (e) {
+		e = e || window.event;
+		// For IE and Firefox prior to version 4
+		if (e) {
+			e.returnValue = 'Sure?';
+		}
+		// For Safari
+		return 'Sure?';
+	};
 });
